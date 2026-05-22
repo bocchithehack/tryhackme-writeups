@@ -1,4 +1,4 @@
-<img src="assets/ctf-logo.png" width="700">
+<img src="assets/ctf-logo.png" width="400">
 
 # Mustacchio - Write-up
 
