@@ -63,7 +63,7 @@ Afterward, I tested for command injection by appending additional commands to th
 
 Commands such as:
 
-ls\n
+ls \
 cat /etc/passwd
 
 <img src="assets/command-test.png" width="700">
