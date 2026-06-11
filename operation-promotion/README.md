@@ -191,4 +191,4 @@ This machine demonstrates how:
 + Information disclosure can assist in targeted credential attacks
 + Misconfigured sudo permissions can lead to privilege escalation
 
-The room provides a realistic attack chain that combines web exploitation, enumeration, credential attacks, and Linux privilege escalation techniques.
+The room provides a realistic attack chain that combines web exploitation, enumeration, credential attacks, and Linux privilege escalation techniques. 
