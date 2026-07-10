@@ -192,10 +192,10 @@ Another common workflow is to let SQLMap replay an authenticated HTTP request ca
 
 After logging into the application:
 
-1 - Enable Burp Suite interception.
-2 - Send the vulnerable request.
-3 - Locate it under HTTP History.
-4 - Save the request as request.txt.
+1 - Enable Burp Suite interception.  
+2 - Send the vulnerable request.  
+3 - Locate it under HTTP History.  
+4 - Save the request as request.txt.  
 
 SQLMap can then replay the request directly.
 
