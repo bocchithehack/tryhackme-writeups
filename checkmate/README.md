@@ -1,4 +1,5 @@
 <img src="assets/ctf-logo.png" width="700">
+
 # Checkmate - Writeup
 
 This room consists of five authentication challenges, each based on password discovery techniques. Every level provides a hint about how Marco's password was chosen, requiring increasingly targeted password attacks.
