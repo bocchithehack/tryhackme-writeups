@@ -125,8 +125,6 @@ Finally, I was able to access the **root flag**.
 
 ## Conclusion
 
-The attack chain for Silent Monitor was:
-
 Silent Monitor was a good example of how multiple vulnerabilities and misconfigurations can be chained together to obtain full system access.
 
 The initial SQL injection allowed access to the internal dashboard, where a command injection vulnerability was discovered in the host health check functionality. This provided a shell as www-data, from which SSH credentials were recovered from a configuration file.
