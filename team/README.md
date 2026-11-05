@@ -1,4 +1,4 @@
-<ctf-logo.png>
+<img src="assets/ctf-logo.png" width="700">
 
 # Team - Write-up
 
@@ -10,7 +10,7 @@ Team is an easy-level boot2root machine available on TryHackMe. The objective is
 
 I started with an Nmap scan to identify open ports and services running on the target.
 
-<nmap-scan.png>
+<img src="assets/nmap-scan.png" width="700">
 
 The scan revealed three open ports:
 
@@ -26,13 +26,13 @@ After updating `/etc/hosts` with the target IP pointing to `team.thm`, I accesse
 
 ## Gobuster
 
-<gobuster-dir.png>
+<img src="assets/gobuster-dir.png" width="700">
 
 Gobuster identified several directories, but most were inaccessible or unhelpful. The `robots.txt` file contained a single word: "dale" (the room creator's name, which could serve as a potential username).
 
 I ran another Gobuster scan specifically targeting the `/scripts/` directory and appending common file extensions like `.txt.`
 
-<gobuster-again.png>
+<img src="assets/gobuster-again.png" width="700">
 
 This time, the scan uncovered a file named `script.txt.`
 
@@ -40,17 +40,17 @@ This time, the scan uncovered a file named `script.txt.`
 
 ## Analyzing `script.txt`
 
-<script-content.png>
+<img src="assets/script-content.png" width="700">
 
 The contents of `script.txt` had the credentials redacted. However, a note at the end mentioned that an older script in the `/scripts/` directory exposed credentials. I modified the URL to access `script.old`, and the file successfully downloaded. Reading it revealed an FTP username and password.
 
-<script-credentials.png>
+<img src="assets/script-credentials.png" width="700">
 
 ## FTP Access
 
 Using the recovered credentials, I logged into the FTP server. Inside, I found a directory named `workshare` containing a text file called `New_site.txt`. I downloaded it for local analysis.
 
-<newsite-txt.png>
+<img src="assets/newsite-txt.png" width="700">
 
 The note revealed that the developer was building a new website on a subdomain: `.dev`, and mentioned that a copy of an SSH `id_rsa` key might be stored in a configuration file on the server.
 
@@ -62,7 +62,7 @@ After adding `dev.team.thm` to my `/etc/hosts` file, I navigated to the new WIP 
 
 Testing the parameter with `/etc/passwd`:
 
-<LFI-test.png>
+<img src="assets/LFI-test.png" width="700">
 
 The inclusion was successful, revealing the contents of `/etc/passwd` and identifying two system users: `gyles` and `dale`.
 
@@ -76,7 +76,7 @@ ffuf -u 'http://dev.team.thm/script.php?page=FUZZ' -w /usr/share/wordlists/secli
 
 (Using `-fs 1` to filter out blank pages).
 
-<ffuf-brute.png>
+<img src="assets/ffuf-brute.png" width="700">
 
 Several files matched, but one stood out immediately: `/etc/ssh/sshd_config`. Accessing it yielded `dale`'s SSH private key (`id_rsa`), granting access to the machine via SSH.
 
@@ -86,7 +86,7 @@ Several files matched, but one stood out immediately: `/etc/ssh/sshd_config`. Ac
 
 After connecting via SSH and grabbing the user flag, i checked `dale`'s sudo permissions using `sudo -l`:
 
-<user-flag.png>
+<img src="assets/user-flag.png" width="700">
 
 The output showed that `dale` could execute a specific script as the user `gyles` without a password.
 
@@ -100,7 +100,7 @@ Reviewing the script's contents revealed a vulnerability in how it handled user 
 
 Because the script lacks input validation and blindly executes the variable, typing an arbitrary command like `/bin/bash` spawns a shell with `gyles`'s privileges.
 
-<gyles-shell.png>
+<img src="assets/gyles-shell.png" width="700">
 
 ## Escalation to Root
 
@@ -110,11 +110,11 @@ While performing manual enumeration as `gyles`, I checked group memberships and 
 find / -group admin 2>/dev/null
 ###
 
-<group-lookup.png>
+<img src="assets/group-lookup.png" width="700">
 
 Inside `/opt/admin_stuff/`, there was a script named `script.sh` owned by root that executed every minute. It backed up data by calling another script (`main_backup.sh`) which I had write access to.
 
-<scriptsh-content.png>
+<img src="assets/scriptsh-content.png" width="700">
 
 To leverage this, I appended a command to `main_backup.sh` to create a SUID copy of the Bash binary in `/tmp`:
 
@@ -124,11 +124,11 @@ echo "cp /bin/bash /tmp/hello && chmod u+s /tmp/hello" >> /usr/local/bin/main_ba
 
 After waiting for the cron job to trigger, I executed the binary from `/tmp` with the `-p` flag to preserve root privileges:
 
-<root-access.png>
+<img src="assets/root-access.png" width="700">
 
 Finally, I retrieved the root flag.
 
-<root-flag.png>
+<img src="assets/root-flag.png" width="700">
 
 # Conclusion
 
