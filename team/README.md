@@ -90,7 +90,7 @@ After connecting via SSH and grabbing the user flag, i checked `dale`'s sudo per
 
 The output showed that `dale` could execute a specific script as the user `gyles` without a password.
 
-<script-function.png>
+<img src="assets/script-function.png" width="700">
 
 Reviewing the script's contents revealed a vulnerability in how it handled user input within a variable (`$error`).
 
