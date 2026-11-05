@@ -70,9 +70,11 @@ The inclusion was successful, revealing the contents of `/etc/passwd` and identi
 
 To find the private SSH key without manual guessing, I used `ffuf` to fuzz for common files via the LFI vulnerability:
 
-###bash
+
+```bash
 ffuf -u 'http://dev.team.thm/script.php?page=FUZZ' -w /usr/share/wordlists/seclists/Fuzzing/LFI/LFI-Jhaddix.txt -fs 1
-###
+```
+
 
 (Using `-fs 1` to filter out blank pages).
 
@@ -106,9 +108,9 @@ Because the script lacks input validation and blindly executes the variable, typ
 
 While performing manual enumeration as `gyles`, I checked group memberships and discovered that `gyles` belonged to the `admin` group. I searched for files and directories associated with this group:
 
-###bash
+```bash
 find / -group admin 2>/dev/null
-###
+```
 
 <img src="assets/group-lookup.png" width="700">
 
