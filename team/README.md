@@ -120,9 +120,9 @@ Inside `/opt/admin_stuff/`, there was a script named `script.sh` owned by root t
 
 To leverage this, I appended a command to `main_backup.sh` to create a SUID copy of the Bash binary in `/tmp`:
 
-###bash
+```bash
 echo "cp /bin/bash /tmp/hello && chmod u+s /tmp/hello" >> /usr/local/bin/main_backup.sh
-###
+```
 
 After waiting for the cron job to trigger, I executed the binary from `/tmp` with the `-p` flag to preserve root privileges:
 
